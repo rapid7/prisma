@@ -1,0 +1,59 @@
+{
+  "author": "Tony Quetano <tony_quetano@rapid7.com>",
+  "bugs": {
+    "url": "https://github.com/rapid7/variegate/issues"
+  },
+  "description": "String-to-color generator",
+  "devDependencies": {
+    "babel": "6.5.2",
+    "babel-cli": "6.9.0",
+    "babel-eslint": "6.0.4",
+    "babel-loader": "6.2.4",
+    "babel-plugin-add-module-exports": "0.2.1",
+    "babel-polyfill": "6.9.1",
+    "babel-preset-es2015": "6.9.0",
+    "babel-preset-react": "6.5.0",
+    "babel-preset-stage-0": "6.5.0",
+    "eslint": "2.11.1",
+    "eslint-friendly-formatter": "2.0.5",
+    "eslint-loader": "1.3.0",
+    "eslint-plugin-import": "1.8.1",
+    "eslint-plugin-react": "5.1.1",
+    "html-webpack-plugin": "2.19.0",
+    "inline-style-prefixer": "1.0.4",
+    "json-loader": "0.5.4",
+    "lodash": "4.13.1",
+    "react": "15.1.0",
+    "react-dom": "15.1.0",
+    "webpack": "1.13.1",
+    "webpack-dev-server": "1.14.1"
+  },
+  "homepage": "https://github.com/rapid7/variegate#readme",
+  "keywords": [
+    "color",
+    "string",
+    "rgb",
+    "rgba",
+    "hsl",
+    "hsla",
+    "hexadecimal"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "name": "prisma",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rapid7/variegate.git"
+  },
+  "scripts": {
+    "build": "NODE_ENV=development ./node_modules/webpack/bin/webpack.js --progress --config=webpack.config.js",
+    "build-minified": "NODE_ENV=production ./node_modules/webpack/bin/webpack.js --progress --config=webpack.config.minified.js",
+    "dev": "NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --config=webpack.config.dev.js",
+    "dev-minified": "NODE_ENV=production ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --config=webpack.config.dev.js",
+    "lint": "eslint src",
+    "prepublish": "npm run lint && npm run transpile && npm run build && npm run build-minified",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "transpile": "./node_modules/babel-cli/bin/babel.js -d lib/ src/"
+  },
+  "version": "1.0.0"
+}
