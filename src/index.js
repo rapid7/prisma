@@ -200,11 +200,12 @@ const rgbToHsl = ([red, green, blue]) => {
 /**
  * return object with a variety of color options for the developer
  *
- * @param {string} string=''
+ * @param {string} value
  * @returns {object}
  */
-const createPrisma = (string = '') => {
-  const hexString = stringToHex(string);
+const createPrisma = (value) => {
+  const stringValue = `${value}`;
+  const hexString = stringToHex(stringValue);
 
   const rgbArray = stringToRgb(hexString);
   const rgbaArray = rgbArray.concat([1]);
@@ -217,7 +218,7 @@ const createPrisma = (string = '') => {
   const hsl = `hsl(${getHslaString(hslArray)})`;
   const hsla = `hsla(${getHslaString(hslaArray)})`;
 
-  const isForegroundDark = shouldForegroundBeDark(rgbArray);
+  const shouldTextBeDark = shouldForegroundBeDark(rgbArray);
 
   let prisma = Object.create(null);
 
@@ -235,7 +236,7 @@ const createPrisma = (string = '') => {
   prisma.hsla = hsla;
   prisma.hslaArray = OBJECT_FREEZE(hslaArray);
 
-  prisma.isForegroundDark = isForegroundDark;
+  prisma.shouldTextBeDark = shouldTextBeDark;
 
   return OBJECT_FREEZE(prisma);
 };
