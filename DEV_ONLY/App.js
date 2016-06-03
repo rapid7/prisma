@@ -65,6 +65,8 @@ class App extends Component {
       {
         hex: color.hex,
         hsl: color.hsl,
+        isTextDark: color.shouldTextBeDark,
+        isTextDarkW3C: color.shouldTextBeDarkW3C,
         rgb: color.rgb,
         string: value
       }
@@ -76,7 +78,11 @@ class App extends Component {
   }, 150);
 
   onChangeInput = (e) => {
-    this.debounceOnChangeInput(e.currentTarget.value);
+    const value = e.currentTarget.value;
+
+    if (value) {
+      this.debounceOnChangeInput(value);
+    }
   };
 
   render() {
@@ -105,11 +111,11 @@ class App extends Component {
             />
 
             <h4>
-              Resulting colors
+              Resulting colors and their tags
             </h4>
 
             <div>
-              {colors.map(({hex, hsl, rgb, string}, colorIndex) => {
+              {colors.map(({hex, hsl, isTextDark, isTextDarkW3C, rgb, string}, colorIndex) => {
                 const hexDisplayStyle = {
                   ...STYLES.colorDisplay,
                   backgroundColor: hex
@@ -121,6 +127,22 @@ class App extends Component {
                 const hslDisplayStyle = {
                   ...STYLES.colorDisplay,
                   backgroundColor: hsl
+                };
+                const textDisplayStyle = {
+                  ...STYLES.colorText,
+                  backgroundColor: hex,
+                  borderRadius: 3,
+                  color: isTextDark ? '#000' : '#fff',
+                  marginTop: 5,
+                  padding: 5
+                };
+                const textDisplayStyleW3C = {
+                  ...STYLES.colorText,
+                  backgroundColor: hex,
+                  borderRadius: 3,
+                  color: isTextDarkW3C ? '#000' : '#fff',
+                  marginTop: 5,
+                  padding: 5
                 };
 
                 return (
@@ -146,8 +168,12 @@ class App extends Component {
                       {hsl}
                     </div>
 
-                    <div style={STYLES.colorText}>
-                      {string || '(no string value)'}
+                    <div style={textDisplayStyle}>
+                      Standard: {string}
+                    </div>
+
+                    <div style={textDisplayStyleW3C}>
+                      W3C-Compliant: {string}
                     </div>
                   </div>
                 );
@@ -177,6 +203,7 @@ style.textContent = `
 }
 
 html, body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0;
 }`;

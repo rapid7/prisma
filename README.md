@@ -2,7 +2,7 @@
 
 A simple string-to-color conversion tool
 
-#### Installation
+### Installation
 
 Install via npm:
 
@@ -23,7 +23,7 @@ const prisma = require('prisma');
 const prisma = window.prisma;
 ```
 
-#### Usage
+### Usage
 
 Simply pass a value to the `prisma` function, and it will return an object with the hashed color information:
 
@@ -41,7 +41,8 @@ const colorizedString = prisma('Hello World!');
   rgbArray: [126, 123, 226],
   rgba: 'rgba(126, 123, 226, 1)',
   rgbaArray: [126, 123, 226, 1],
-  shouldTextBeDark: true
+  shouldTextBeDark: false,
+  shouldTextBeDarkW3C: true
 }
 /*
 ```
@@ -86,13 +87,17 @@ The computed values for RGBA as an array of numbers
 
 **shouldTextBeDark** `{boolean}`
 
+Boolean value denoting if using this color as a background-color on an element, should the foreground text color be dark. This is based on an opinionated gamma value threshold.
+
+**shouldTextBeDarkW3C** `{boolean}`
+
 Boolean value denoting if using this color as a background-color on an element, should the foreground text color be dark. This is based on the W3C Relative Luminance Definition that is [defined in the W3 spec](https://www.w3.org/TR/WCAG20/#relativeluminancedef).
 
-#### How does it work?
+### How does it work?
 
 Internally the string is hashed using a simple bitwise operation, and the resultant integer is converted into a hexadecimal code that the other values are built from. Because the hash is a bitwise operation based on charCodeAt, the consistency of the hash is guaranteed, and therefore the resultant colors are as well.
 
-#### Development
+### Development
 
 Clone the git repository, and run `npm install`. From there, you can run any of the following npm scripts:
 * `build` = builds the library with `NODE_ENV=development` and with source maps, outputting to the `dist` folder

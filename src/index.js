@@ -43,6 +43,31 @@ const getHslaString = (hsla) => {
 /**
  * determine whether the foreground color for the text
  * used with the color as a background color should
+ * be dark (preferrably black), based on general gamma guideliness
+ *
+ * @param {Array<number>} rgb
+ * @returns {boolean}
+ */
+const shouldForegroundBeDark = (rgb) => {
+  const grayL = rgb.reduce((currentGrayL, colorPart, colorPartIndex) => {
+    switch (colorPartIndex) {
+      case 0:
+        return currentGrayL + (colorPart * 0.299);
+
+      case 1:
+        return currentGrayL + (colorPart * 0.587);
+
+      case 2:
+        return currentGrayL + (colorPart * 0.114);
+    }
+  }, 0);
+
+  return grayL >= 155;
+};
+
+/**
+ * determine whether the foreground color for the text
+ * used with the color as a background color should
  * be dark (preferrably black), based on relative
  * luminance definitions in the spec:
  *
@@ -51,7 +76,7 @@ const getHslaString = (hsla) => {
  * @param {Array} rgb
  * @returns {boolean}
  */
-const shouldForegroundBeDark = (rgb) => {
+const shouldForegroundBeDarkW3C = (rgb) => {
   const L = rgb.reduce((currentL, color, colorIndex) => {
     let updatedColor = color / 255;
 
@@ -219,6 +244,7 @@ const createPrisma = (value) => {
   const hsla = `hsla(${getHslaString(hslaArray)})`;
 
   const shouldTextBeDark = shouldForegroundBeDark(rgbArray);
+  const shouldTextBeDarkW3C = shouldForegroundBeDarkW3C(rgbArray);
 
   let prisma = Object.create(null);
 
@@ -237,6 +263,7 @@ const createPrisma = (value) => {
   prisma.hslaArray = OBJECT_FREEZE(hslaArray);
 
   prisma.shouldTextBeDark = shouldTextBeDark;
+  prisma.shouldTextBeDarkW3C = shouldTextBeDarkW3C;
 
   return OBJECT_FREEZE(prisma);
 };
