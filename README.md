@@ -91,3 +91,13 @@ Boolean value denoting if using this color as a background-color on an element, 
 #### How does it work?
 
 Internally the string is hashed using a simple bitwise operation, and the resultant integer is converted into a hexadecimal code that the other values are built from. Because the hash is a bitwise operation based on charCodeAt, the consistency of the hash is guaranteed, and therefore the resultant colors are as well.
+
+#### Development
+
+Clone the git repository, and run `npm install`. From there, you can run any of the following npm scripts:
+* `build` = builds the library with `NODE_ENV=development` and with source maps, outputting to the `dist` folder
+* `build-minified` = builds the library with `NODE_ENV=production` and minified, outputting tot the `dist` folder
+* `dev` = runs the playground React application to see `prisma` in action. Have fun playing!
+* `lint` = runs ESLint against the files in `src`
+* `prepublish` = runs `lint`, `transpile`, `build`, and `build-minified`
+* `transpile` = runs babel to transpile the files in `src` to an ES5-compliant version in the `lib` folder`
