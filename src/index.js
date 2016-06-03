@@ -50,20 +50,20 @@ const getHslaString = (hsla) => {
  * @returns {boolean}
  */
 const shouldForegroundBeDark = (rgb) => {
-  const grayL = rgb.reduce((currentGrayL, colorPart, colorPartIndex) => {
+  const gammaValue = rgb.reduce((currentGammaValue, colorPart, colorPartIndex) => {
     switch (colorPartIndex) {
       case 0:
-        return currentGrayL + (colorPart * 0.299);
+        return currentGammaValue + (colorPart * 0.299);
 
       case 1:
-        return currentGrayL + (colorPart * 0.587);
+        return currentGammaValue + (colorPart * 0.587);
 
       case 2:
-        return currentGrayL + (colorPart * 0.114);
+        return currentGammaValue + (colorPart * 0.114);
     }
   }, 0);
 
-  return grayL >= GAMMA_THRESHOLD;
+  return gammaValue >= GAMMA_THRESHOLD;
 };
 
 /**
