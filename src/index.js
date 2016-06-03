@@ -174,27 +174,27 @@ const rgbToHsl = ([red, green, blue]) => {
   }
 
   const delta = max - min;
-  const saturation = luminance < 0.5 ? delta / (max + min) : delta / (1 - ((2 * luminance) - 1));
+  const saturation = luminance > 0.5 ? delta / (2 - max - min) : delta / (max + min);
 
   let hue;
 
   switch (max) {
     case fractionalRed:
-      hue = (fractionalGreen - fractionalBlue) / (max - min);
+      hue = (fractionalGreen - fractionalBlue) / delta + (fractionalGreen < fractionalBlue ? 6 : 0);
       break;
 
     case fractionalGreen:
-      hue = 2 + (fractionalBlue - fractionalRed) / (max - min);
+      hue = (fractionalBlue - fractionalRed) / delta + 2;
       break;
 
     case fractionalBlue:
-      hue = 4 + (fractionalRed - fractionalGreen) / (max - min);
+      hue = (fractionalRed - fractionalGreen) / delta + 4;
       break;
   }
 
   hue *= 60;
 
-  return [MATH_ROUND(hue), roundToTwoDigits(saturation), roundToTwoDigits(luminance)];
+  return [MATH_ROUND(MATH_MAX(0, hue)), roundToTwoDigits(saturation), roundToTwoDigits(luminance)];
 };
 
 /**
