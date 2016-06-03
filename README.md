@@ -100,4 +100,4 @@ Clone the git repository, and run `npm install`. From there, you can run any of 
 * `dev` = runs the playground React application to see `prisma` in action. Have fun playing!
 * `lint` = runs ESLint against the files in `src`
 * `prepublish` = runs `lint`, `transpile`, `build`, and `build-minified`
-* `transpile` = runs babel to transpile the files in `src` to an ES5-compliant version in the `lib` folder`
+* `transpile` = runs babel to transpile the files in `src` to an ES5-compliant version in the `lib` folder
