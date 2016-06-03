@@ -1,8 +1,9 @@
 /.idea
 /.git
-/dist
 /src
-.bootstraprc
 .editorconfig
 .eslintrc
 .gitignore
+webpack.config.dev.js
+webpack.config.js
+webpack.config.minified.js
