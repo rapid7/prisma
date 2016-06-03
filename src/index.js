@@ -53,13 +53,13 @@ const shouldForegroundBeDark = (rgb) => {
   const gammaValue = rgb.reduce((currentGammaValue, colorPart, colorPartIndex) => {
     switch (colorPartIndex) {
       case 0:
-        return currentGammaValue + (colorPart * 0.299);
+        return currentGammaValue + (colorPart * 0.2126);
 
       case 1:
-        return currentGammaValue + (colorPart * 0.587);
+        return currentGammaValue + (colorPart * 0.7152);
 
       case 2:
-        return currentGammaValue + (colorPart * 0.114);
+        return currentGammaValue + (colorPart * 0.0722);
     }
   }, 0);
 
