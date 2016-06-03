@@ -5,6 +5,7 @@ const OBJECT_FREEZE = Object.freeze;
 
 const DEFAULT_HEX_CODE_VALUE = '000000';
 const L_THRESHOLD = Math.sqrt(1.05 * 0.05) - 0.05;
+const GAMMA_THRESHOLD = 155;
 
 /**
  * convenience function to round fraction to two digits
@@ -62,7 +63,7 @@ const shouldForegroundBeDark = (rgb) => {
     }
   }, 0);
 
-  return grayL >= 155;
+  return grayL >= GAMMA_THRESHOLD;
 };
 
 /**
