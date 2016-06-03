@@ -57,9 +57,9 @@ const shouldForegroundBeDark = (rgb) => {
 
     if (updatedColor <= 0.03928) {
       updatedColor /= 12.92;
+    } else {
+      updatedColor = ((updatedColor + 0.055) / 1.055) ** 2.4;
     }
-
-    updatedColor = ((updatedColor + 0.055) / 1.055) ** 2.4;
 
     switch (colorIndex) {
       case 0:
