@@ -49,7 +49,6 @@
     "build": "NODE_ENV=development ./node_modules/webpack/bin/webpack.js --progress --config=webpack.config.js",
     "build-minified": "NODE_ENV=production ./node_modules/webpack/bin/webpack.js --progress --config=webpack.config.minified.js",
     "dev": "NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --config=webpack.config.dev.js",
-    "dev-minified": "NODE_ENV=production ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --config=webpack.config.dev.js",
     "lint": "eslint src",
     "prepublish": "npm run lint && npm run transpile && npm run build && npm run build-minified",
     "test": "echo \"Error: no test specified\" && exit 1",
