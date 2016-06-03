@@ -7,7 +7,7 @@ import {
   render
 } from 'react-dom';
 
-import variegate from '../src';
+import prisma from '../src';
 
 const prefixer = new Prefixer();
 
@@ -56,7 +56,7 @@ class App extends Component {
   };
 
   debounceOnChangeInput = debounce((value) => {
-    const color = variegate(value);
+    const color = prisma(value);
 
     console.log(color);
 

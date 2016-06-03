@@ -63,8 +63,8 @@ module.exports = {
   },
 
   output: {
-    filename: 'variegate.js',
-    library: 'variegate',
+    filename: 'prisma.js',
+    library: 'prisma',
     libraryTarget: 'umd',
     path: path.join(__dirname, '/dist')
   },

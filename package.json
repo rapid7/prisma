@@ -1,7 +1,7 @@
 {
   "author": "Tony Quetano <tony_quetano@rapid7.com>",
   "bugs": {
-    "url": "https://github.com/rapid7/variegate/issues"
+    "url": "https://github.com/rapid7/prisma/issues"
   },
   "description": "String-to-color generator",
   "devDependencies": {
@@ -28,7 +28,7 @@
     "webpack": "1.13.1",
     "webpack-dev-server": "1.14.1"
   },
-  "homepage": "https://github.com/rapid7/variegate#readme",
+  "homepage": "https://github.com/rapid7/prisma#readme",
   "keywords": [
     "color",
     "string",
@@ -43,7 +43,7 @@
   "name": "prisma",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rapid7/variegate.git"
+    "url": "git+https://github.com/rapid7/prisma.git"
   },
   "scripts": {
     "build": "NODE_ENV=development ./node_modules/webpack/bin/webpack.js --progress --config=webpack.config.js",
