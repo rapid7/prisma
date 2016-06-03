@@ -30,7 +30,7 @@ Simply pass a value to the `prisma` function, and it will return an object with 
 ```
 const colorizedString = prisma('Hello World!');
 
-/*
+/* colorizedString is now the object:
 {
   hex: '#7e7be2',
   hsl: 'hsl(242, 64%, 68%)',
