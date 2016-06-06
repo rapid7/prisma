@@ -36,7 +36,8 @@
     "rgba",
     "hsl",
     "hsla",
-    "hexadecimal"
+    "hexadecimal",
+    "hex"
   ],
   "license": "MIT",
   "main": "lib/index.js",
