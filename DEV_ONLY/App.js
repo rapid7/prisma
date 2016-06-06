@@ -56,9 +56,10 @@ class App extends Component {
   };
 
   debounceOnChangeInput = debounce((value) => {
-    const color = prisma(value);
-
-    console.log(color);
+    const color = prisma(value, {
+      defaultHex: 'ffffff',
+      opacity: 0.5
+    });
 
     const colors = [
       ...this.state.colors,
@@ -80,9 +81,9 @@ class App extends Component {
   onChangeInput = (e) => {
     const value = e.currentTarget.value;
 
-    if (value) {
+    // if (value) {
       this.debounceOnChangeInput(value);
-    }
+    // }
   };
 
   render() {
