@@ -47,9 +47,10 @@ const getHslaString = (hsla) => {
  * be dark (preferrably black), based on general gamma guideliness
  *
  * @param {Array<number>} rgb
+ * @param {number} gammaThreshold
  * @returns {boolean}
  */
-const shouldForegroundBeDark = (rgb) => {
+const shouldForegroundBeDark = (rgb, gammaThreshold) => {
   const gammaValue = rgb.reduce((currentGammaValue, colorPart, colorPartIndex) => {
     switch (colorPartIndex) {
       case 0:
@@ -63,7 +64,7 @@ const shouldForegroundBeDark = (rgb) => {
     }
   }, 0);
 
-  return gammaValue >= GAMMA_THRESHOLD;
+  return gammaValue >= gammaThreshold;
 };
 
 /**
@@ -123,14 +124,15 @@ const hashCode = (string) => {
  * convert integer value to hex code
  *
  * @param {number} integer
+ * @param {string} defaultHex
  * @returns {string}
  */
-const integerToHex = (integer) => {
+const integerToHex = (integer, defaultHex) => {
   let hex = ((integer >> 24)&0xFF).toString(16) + ((integer >> 16)&0XFF).toString(16) +
       ((integer >> 8)&0xFF).toString(16) + (integer&0xFF).toString(16);
 
   if (!hex) {
-    return DEFAULT_HEX_CODE_VALUE;
+    return defaultHex;
   }
 
   if (hex.length < 6) {
@@ -151,16 +153,17 @@ const integerToHex = (integer) => {
  * from hashed value
  *
  * @param {string} string
+ * @param {string} defaultHex
  * @returns {string}
  */
-const stringToHex = (string) => {
+const stringToHex = (string, defaultHex) => {
   if (!string) {
-    return DEFAULT_HEX_CODE_VALUE;
+    return defaultHex;
   }
 
   const hash = hashCode(string);
 
-  return integerToHex(hash).substring(0, 6);
+  return integerToHex(hash, defaultHex).substring(0, 6);
 };
 
 /**
@@ -227,16 +230,34 @@ const rgbToHsl = ([red, green, blue]) => {
  * return object with a variety of color options for the developer
  *
  * @param {string} value
+ * @param {object} options={}
+ * @param {string} [options.defaultHex=DEFAULT_HEX_CODE_VALUE]
+ * @param {number} [options.gammaThreshold=GAMMA_THRESHOLD]
+ * @param {number} [options.opacity=1]
  * @returns {object}
  */
-const createPrisma = (value) => {
+const createPrisma = (value, options = {}) => {
+  const {
+      defaultHex = DEFAULT_HEX_CODE_VALUE,
+      gammaThreshold = GAMMA_THRESHOLD,
+      opacity = 1
+  } = options;
+
+  if (defaultHex.length !== 6) {
+    throw new SyntaxError('Your defaultHex value is invalid; it needs to be the full six-character hexadecimal color code without the leading #.');
+  }
+
+  if (opacity > 1 || opacity < 0) {
+    throw new SyntaxError('Your opacity value is invalid; it needs to be a decimal value between 0 and 1.');
+  }
+
   const stringValue = `${value}`;
-  const hexString = stringToHex(stringValue);
+  const hexString = stringToHex(stringValue, defaultHex);
 
   const rgbArray = stringToRgb(hexString);
-  const rgbaArray = rgbArray.concat([1]);
+  const rgbaArray = rgbArray.concat([opacity]);
   const hslArray = rgbToHsl(rgbArray);
-  const hslaArray = hslArray.concat([1]);
+  const hslaArray = hslArray.concat([opacity]);
 
   const hex = `#${hexString}`;
   const rgb = `rgb(${rgbArray.join(', ')})`;
@@ -244,7 +265,7 @@ const createPrisma = (value) => {
   const hsl = `hsl(${getHslaString(hslArray)})`;
   const hsla = `hsla(${getHslaString(hslaArray)})`;
 
-  const shouldTextBeDark = shouldForegroundBeDark(rgbArray);
+  const shouldTextBeDark = shouldForegroundBeDark(rgbArray, gammaThreshold);
   const shouldTextBeDarkW3C = shouldForegroundBeDarkW3C(rgbArray);
 
   let prisma = Object.create(null);

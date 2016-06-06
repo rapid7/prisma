@@ -1,6 +1,8 @@
 # prisma
 
-A simple string-to-color conversion tool
+A simple string-to-color conversion tool. The string provided generates a unique and consistent color, and an immutable object of the various valid HTML color values are returned.
+
+`prisma` has no dependencies, and has a tiny footprint of only 1.6kb (minified and gzipped).
 
 ### Installation
 
@@ -44,10 +46,59 @@ const colorizedString = prisma('Hello World!');
   shouldTextBeDark: false,
   shouldTextBeDarkW3C: true
 }
-/*
+*/
 ```
 
-A breakdown of the values:
+Additionally, you can pass an object of options to the call:
+
+```
+const colorizedStringWithOptions = prisma('Hello World!', {
+  opacity: 0.5
+});
+
+/* colorizedStringWithOptions is now the object:
+{
+  hex: '#7e7be2',
+  hsl: 'hsl(242, 64%, 68%)',
+  hslArray: [242, 0.64, 0.68],
+  hsla: 'hsla(242, 64%, 68%, 0.5)',
+  hslaArray: [242, 0.64, 0.68, 0.5],
+  rgb: 'rgb(126, 123, 226)',
+  rgbArray: [126, 123, 226],
+  rgba: 'rgba(126, 123, 226, 0.5)',
+  rgbaArray: [126, 123, 226, 0.5],
+  shouldTextBeDark: false,
+  shouldTextBeDarkW3C: true
+}
+*/
+```
+
+Available options:
+
+**defaultHex**
+
+Six-character hexadecimal code that is the given default for empty strings.
+* Default = `000000`
+* Good = `ffffff`
+* Bad = `fff`
+* Bad = `#ffffff`
+
+**gammaThreshold**
+
+Numeric gamma value used as comparator when calculating `shouldTextBeDark`, where gamma values higher than the number provided will return `true`.
+* Default = `155`
+* Good = `167`
+* Bad = `"167"`
+
+**opacity**
+
+Numeric opacity value used in `rgba` and `hsla` (note that these are the only two colors impacted by opacity).
+* Default = `1`
+* Good = `0.5`
+* Bad = `50`
+* Bad = `-0.6`
+
+A breakdown of the properties in the object returned:
 
 **hex** `{string}`
 
