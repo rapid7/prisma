@@ -73,7 +73,7 @@ const colorizedStringWithOptions = prisma('Hello World!', {
 */
 ```
 
-Available options:
+#### Options
 
 **defaultHex**
 
@@ -98,7 +98,7 @@ Numeric opacity value used in `rgba` and `hsla` (note that these are the only tw
 * Bad = `50`
 * Bad = `-0.6`
 
-A breakdown of the properties in the object returned:
+#### Object properties returned
 
 **hex** `{string}`
 
