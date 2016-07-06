@@ -51,14 +51,6 @@ const getHslaString = (hsla) => {
  * @returns {boolean}
  */
 const shouldForegroundBeDark = (rgb, brightnessThreshold) => {
-  let brightnessComparator = brightnessThreshold;
-
-  if (brightnessThreshold < 0) {
-    brightnessComparator = 0;
-  } else if (brightnessThreshold > 255) {
-    brightnessComparator = 255;
-  }
-
   const brightnessValue = rgb.reduce((currentBrightnessValue, colorPart, colorPartIndex) => {
     switch (colorPartIndex) {
       case 0:
@@ -72,7 +64,7 @@ const shouldForegroundBeDark = (rgb, brightnessThreshold) => {
     }
   }, 0);
 
-  return Math.sqrt(brightnessValue) >= brightnessComparator;
+  return Math.sqrt(brightnessValue) >= brightnessThreshold;
 };
 
 /**
