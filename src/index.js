@@ -232,7 +232,7 @@ const rgbToHsl = ([red, green, blue]) => {
  * @param {string} value
  * @param {object} options={}
  * @param {string} [options.defaultHex=DEFAULT_HEX_CODE_VALUE]
- * @param {number} [options.gammaThreshold=BRIGHTNESS_THRESHOLD]
+ * @param {number} [options.brightnessThreshold=BRIGHTNESS_THRESHOLD]
  * @param {number} [options.opacity=1]
  * @returns {object}
  */
