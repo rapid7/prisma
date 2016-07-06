@@ -53,6 +53,8 @@ Additionally, you can pass an object of options to the call:
 
 ```
 const colorizedStringWithOptions = prisma('Hello World!', {
+  brightnessThreshold: 135,
+  defaultHex: '1d1d1d',
   opacity: 0.5
 });
 
@@ -75,6 +77,13 @@ const colorizedStringWithOptions = prisma('Hello World!', {
 
 #### Options
 
+**brightnessThreshold**
+
+Numeric brightness value used as comparator when calculating `shouldTextBeDark`, where brightness values greater than or equal to the number provided will return `true`. Valid values are between 0 and 255, with the recommended range between 128 and 145.
+* Default = `130`
+* Good = `140`
+* Bad = `"140"`
+
 **defaultHex**
 
 Six-character hexadecimal code that is the given default for empty strings.
@@ -82,13 +91,6 @@ Six-character hexadecimal code that is the given default for empty strings.
 * Good = `ffffff`
 * Bad = `fff`
 * Bad = `#ffffff`
-
-**gammaThreshold**
-
-Numeric gamma value used as comparator when calculating `shouldTextBeDark`, where gamma values higher than the number provided will return `true`.
-* Default = `155`
-* Good = `167`
-* Bad = `"167"`
 
 **opacity**
 
