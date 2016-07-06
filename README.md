@@ -14,7 +14,7 @@ $ npm i prisma --save
 
 and incorporate into your project:
 
-```
+```javascript
 // ES2015
 import prisma from 'prisma';
 
@@ -29,7 +29,7 @@ const prisma = window.prisma;
 
 Simply pass a value to the `prisma` function, and it will return an object with the hashed color information:
 
-```
+```javascript
 const colorizedString = prisma('Hello World!');
 
 /* colorizedString is now the object:
@@ -51,7 +51,7 @@ const colorizedString = prisma('Hello World!');
 
 Additionally, you can pass an object of options to the call:
 
-```
+```javascript
 const colorizedStringWithOptions = prisma('Hello World!', {
   brightnessThreshold: 135,
   defaultHex: '1d1d1d',
@@ -86,11 +86,11 @@ Numeric brightness value used as comparator when calculating `shouldTextBeDark`,
 
 **defaultHex**
 
-Six-character hexadecimal code that is the given default for empty strings.
+Hexadecimal code that is the given default for empty strings. Shorthand values or with preceding hash is allowed.
 * Default = `000000`
 * Good = `ffffff`
-* Bad = `fff`
-* Bad = `#ffffff`
+* Good = `#fff`
+* Bad = `red`
 
 **opacity**
 
@@ -145,6 +145,26 @@ Boolean value denoting if using this color as a background-color on an element, 
 **shouldTextBeDarkW3C** `{boolean}`
 
 Boolean value denoting if using this color as a background-color on an element, should the foreground text color be dark. This is based on the W3C Relative Luminance Definition that is [defined in the W3 spec](https://www.w3.org/TR/WCAG20/#relativeluminancedef).
+
+### Additional functions
+
+**prisma.shouldTextBeDark(hexColor: string[, brightnessThreshold: number])** *returns `{boolean}`*
+
+Pass a hexadecimal color to it (with or without leading hash), and it returns whether the foreground text should be dark or not based on brightness level.
+
+```javascript
+prisma.shouldTextBeDark('#000'); // false
+prisma.shouldTextBeDark('ffffff'); // true
+```
+
+**prisma.shouldTextBeDarkW3C(hexColor: string[, brightnessThreshold: number])** *returns `{boolean}`*
+
+Pass a hexadecimal color to it (with or without leading hash), and it returns whether the foreground text should be dark or not based on the W3C standard.
+
+```javascript
+prisma.shouldTextBeDarkW3C('#000'); // false
+prisma.shouldTextBeDarkW3C('ffffff'); // true
+```
 
 ### How does it work?
 
