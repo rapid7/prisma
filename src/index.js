@@ -5,7 +5,7 @@ const OBJECT_FREEZE = Object.freeze;
 
 const DEFAULT_HEX_CODE_VALUE = '000000';
 const L_THRESHOLD = Math.sqrt(1.05 * 0.05) - 0.05;
-const GAMMA_THRESHOLD = 155;
+const BRIGHTNESS_THRESHOLD = 130;
 
 /**
  * convenience function to round fraction to two digits
@@ -44,27 +44,35 @@ const getHslaString = (hsla) => {
 /**
  * determine whether the foreground color for the text
  * used with the color as a background color should
- * be dark (preferrably black), based on general gamma guideliness
+ * be dark (preferrably black), based on general brightness guideliness
  *
  * @param {Array<number>} rgb
- * @param {number} gammaThreshold
+ * @param {number} brightnessThreshold
  * @returns {boolean}
  */
-const shouldForegroundBeDark = (rgb, gammaThreshold) => {
-  const gammaValue = rgb.reduce((currentGammaValue, colorPart, colorPartIndex) => {
+const shouldForegroundBeDark = (rgb, brightnessThreshold) => {
+  let brightnessComparator = brightnessThreshold;
+
+  if (brightnessThreshold < 0) {
+    brightnessComparator = 0;
+  } else if (brightnessThreshold > 255) {
+    brightnessComparator = 255;
+  }
+
+  const brightnessValue = rgb.reduce((currentBrightnessValue, colorPart, colorPartIndex) => {
     switch (colorPartIndex) {
       case 0:
-        return currentGammaValue + (colorPart * 0.2126);
+        return currentBrightnessValue + (colorPart * colorPart * 0.241);
 
       case 1:
-        return currentGammaValue + (colorPart * 0.7152);
+        return currentBrightnessValue + (colorPart * colorPart * 0.691);
 
       case 2:
-        return currentGammaValue + (colorPart * 0.0722);
+        return currentBrightnessValue + (colorPart * colorPart * 0.068);
     }
   }, 0);
 
-  return gammaValue >= gammaThreshold;
+  return Math.sqrt(brightnessValue) >= brightnessComparator;
 };
 
 /**
@@ -232,14 +240,14 @@ const rgbToHsl = ([red, green, blue]) => {
  * @param {string} value
  * @param {object} options={}
  * @param {string} [options.defaultHex=DEFAULT_HEX_CODE_VALUE]
- * @param {number} [options.gammaThreshold=GAMMA_THRESHOLD]
+ * @param {number} [options.gammaThreshold=BRIGHTNESS_THRESHOLD]
  * @param {number} [options.opacity=1]
  * @returns {object}
  */
 const createPrisma = (value, options = {}) => {
   const {
       defaultHex = DEFAULT_HEX_CODE_VALUE,
-      gammaThreshold = GAMMA_THRESHOLD,
+      brightnessThreshold = BRIGHTNESS_THRESHOLD,
       opacity = 1
   } = options;
 
@@ -249,6 +257,10 @@ const createPrisma = (value, options = {}) => {
 
   if (opacity > 1 || opacity < 0) {
     throw new SyntaxError('Your opacity value is invalid; it needs to be a decimal value between 0 and 1.');
+  }
+
+  if (brightnessThreshold < 0 || brightnessThreshold > 255) {
+    throw new SyntaxError('Your brightnessThreshold is invalid; it needs to be a numeric value between 0 and 255.');
   }
 
   const stringValue = `${value}`;
@@ -265,7 +277,7 @@ const createPrisma = (value, options = {}) => {
   const hsl = `hsl(${getHslaString(hslArray)})`;
   const hsla = `hsla(${getHslaString(hslaArray)})`;
 
-  const shouldTextBeDark = shouldForegroundBeDark(rgbArray, gammaThreshold);
+  const shouldTextBeDark = shouldForegroundBeDark(rgbArray, brightnessThreshold);
   const shouldTextBeDarkW3C = shouldForegroundBeDarkW3C(rgbArray);
 
   let prisma = Object.create(null);
