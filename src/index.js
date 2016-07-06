@@ -3,9 +3,24 @@ const MATH_MAX = Math.max;
 const MATH_MIN = Math.min;
 const OBJECT_FREEZE = Object.freeze;
 
+const SHORTHAND_REGEXP = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
 const DEFAULT_HEX_CODE_VALUE = '000000';
 const L_THRESHOLD = Math.sqrt(1.05 * 0.05) - 0.05;
 const BRIGHTNESS_THRESHOLD = 130;
+
+/**
+ * get the full six-character hexcode from any shorthand values
+ *
+ * @param {string} color=DEFAULT_HEX_CODE_VALUE
+ * @returns {string}
+ */
+const getProperHex = (color = DEFAULT_HEX_CODE_VALUE) => {
+  return color
+      .replace(SHORTHAND_REGEXP, (match, red, green, blue) => {
+        return `${red}${red}${green}${green}${blue}${blue}`;
+      })
+      .replace('#', '');
+};
 
 /**
  * convenience function to round fraction to two digits
@@ -243,10 +258,6 @@ const createPrisma = (value, options = {}) => {
       opacity = 1
   } = options;
 
-  if (defaultHex.length !== 6) {
-    throw new SyntaxError('Your defaultHex value is invalid; it needs to be the full six-character hexadecimal color code without the leading #.');
-  }
-
   if (opacity > 1 || opacity < 0) {
     throw new SyntaxError('Your opacity value is invalid; it needs to be a decimal value between 0 and 1.');
   }
@@ -256,7 +267,8 @@ const createPrisma = (value, options = {}) => {
   }
 
   const stringValue = `${value}`;
-  const hexString = stringToHex(stringValue, defaultHex);
+  const finalDefaultHex = getProperHex(defaultHex);
+  const hexString = stringToHex(stringValue, finalDefaultHex);
 
   const rgbArray = stringToRgb(hexString);
   const rgbaArray = rgbArray.concat([opacity]);
@@ -292,6 +304,39 @@ const createPrisma = (value, options = {}) => {
   prisma.shouldTextBeDarkW3C = shouldTextBeDarkW3C;
 
   return OBJECT_FREEZE(prisma);
+};
+
+/**
+ * convenience function if you want to test if the foreground
+ * should be dark based on a specific brightness level
+ *
+ * @param {string} color=DEFAULT_HEX_CODE_VALUE
+ * @param {number} brightnessThreshold=BRIGHTNESS_THRESHOLD
+ * @returns {boolean}
+ */
+createPrisma.shouldTextBeDark = (color = DEFAULT_HEX_CODE_VALUE, brightnessThreshold = BRIGHTNESS_THRESHOLD) => {
+  if (brightnessThreshold < 0 || brightnessThreshold > 255) {
+    throw new SyntaxError('Your brightnessThreshold is invalid; it needs to be a numeric value between 0 and 255.');
+  }
+
+  const properHex = getProperHex(color);
+  const rgbArray = stringToRgb(properHex);
+
+  return shouldForegroundBeDark(rgbArray, brightnessThreshold);
+};
+
+/**
+ * convenience function if you want to test if the foreground
+ * should be dark based on the W3C standard
+ *
+ * @param {string} color=DEFAULT_HEX_CODE_VALUE
+ * @returns {boolean}
+ */
+createPrisma.shouldTextBeDarkWEC = (color = DEFAULT_HEX_CODE_VALUE) => {
+  const properHex = getProperHex(color);
+  const rgbArray = stringToRgb(properHex);
+
+  return shouldForegroundBeDarkW3C(rgbArray);
 };
 
 export default createPrisma;

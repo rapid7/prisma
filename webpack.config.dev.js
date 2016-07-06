@@ -37,7 +37,9 @@ module.exports = {
   module: {
     preLoaders: [
       {
-        exclude: /scss/,
+        exclude: [
+            /node_modules/
+        ],
         include: [
           /src/,
           /DEV_ONLY/
@@ -52,6 +54,9 @@ module.exports = {
         loader: 'json',
         test: /\.json$/
       }, {
+        exclude: [
+          /node_modules/
+        ],
         include: [
           /src/,
           /DEV_ONLY/
