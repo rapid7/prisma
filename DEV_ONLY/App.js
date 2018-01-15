@@ -1,54 +1,56 @@
-import Prefixer from 'inline-style-prefixer';
 import debounce from 'lodash/debounce';
-import React, {
-  Component
-} from 'react';
-import {
-  render
-} from 'react-dom';
+import React, {Component} from 'react';
+import styled from 'styled-components';
 
 import prisma from '../src';
 
-const prefixer = new Prefixer();
+const Container = styled.div`
+  height: 100vh;
+  padding: 15px;
+`;
 
-const STYLES = prefixer.prefix({
-  color: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'nowrap'
-  },
-  colorDisplay: {
-    flexBasis: 15,
-    flexGrow: 0,
-    flexShrink: 0,
-    height: 15,
-    marginRight: 5,
-    width: 15
-  },
-  colorText: {
-    flexBasis: 'auto',
-    flexGrow: 0,
-    flexShrink: 0,
-    marginRight: 15
-  },
-  container: {
-    height: '100vh',
-    padding: 15
-  },
-  input: {
-    appearance: 'none',
-    border: '1px solid #ccc',
-    borderRadius: 3,
-    display: 'block',
-    outline: 0,
-    padding: 6,
-    width: '100%'
-  },
-  main: {
-    marginTop: 15
-  }
-});
+const Main = styled.main`
+  margin-top: 15px;
+`;
+
+const Input = styled.input`
+  appearance: none;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  display: block;
+  outline: 0;
+  padding: 6px;
+  width: 100%;
+`;
+
+const Color = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+`;
+
+const ColorDisplay = styled.div`
+  flex-basis: 15px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  height: 15px;
+  margin-right: 5px;
+  width: 15px;
+`;
+
+const ColorText = styled.div`
+  flex-basis: auto;
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-right: 15px;
+`;
+
+const ColorTextDisplay = ColorText.extend`
+  border-radius: 3px;
+  margin-top: 5px;
+  padding: 5px;
+`;
 
 class App extends Component {
   state = {
@@ -56,157 +58,107 @@ class App extends Component {
   };
 
   debounceOnChangeInput = debounce((value) => {
-    const color = prisma(value, {
-      defaultHex: '#5d5',
-      opacity: 0.5
-    });
+    if (value) {
+      const color = prisma(value, {
+        defaultHex: '#5d5',
+        opacity: 0.5
+      });
 
-    const colors = [
-      ...this.state.colors,
-      {
-        hex: color.hex,
-        hsl: color.hsl,
-        isTextDark: color.shouldTextBeDark,
-        isTextDarkW3C: color.shouldTextBeDarkW3C,
-        rgb: color.rgb,
-        string: value
-      }
-    ];
+      console.log(color);
 
-    this.setState({
-      colors
-    });
+      const colors = [
+        ...this.state.colors,
+        {
+          hex: color.hex,
+          hsl: color.hsl,
+          isTextDark: color.shouldTextBeDark,
+          isTextDarkW3C: color.shouldTextBeDarkW3C,
+          rgb: color.rgb,
+          string: value
+        }
+      ];
+
+      this.setState({
+        colors
+      });
+    }
   }, 150);
 
   onChangeInput = (e) => {
     const value = e.currentTarget.value;
 
     // if (value) {
-      this.debounceOnChangeInput(value);
+    this.debounceOnChangeInput(value);
     // }
   };
 
   render() {
-    const {
-        colors
-    } = this.state;
+    const {colors} = this.state;
 
     return (
-        <div style={STYLES.container}>
-          <header>
-            <h1>
-              prisma
-            </h1>
+      <Container>
+        <header>
+          <h1>prisma</h1>
 
-            <div>
-              Enter the string value below and see the resulting color value!
-            </div>
-          </header>
+          <div>Enter the string value below and see the resulting color value!</div>
+        </header>
 
-          <main style={STYLES.main}>
-            <input
-                onChange={this.onChangeInput}
-                placeholder="Enter a string to see the resulting color value"
-                style={STYLES.input}
-                type="text"
-            />
+        <Main>
+          <Input
+            onChange={this.onChangeInput}
+            placeholder="Enter a string to see the resulting color value"
+            type="text"
+          />
 
-            <h4>
-              Resulting colors and their tags
-            </h4>
+          <h4>Resulting colors and their tags</h4>
 
-            <div>
-              {colors.map(({hex, hsl, isTextDark, isTextDarkW3C, rgb, string}, colorIndex) => {
-                const hexDisplayStyle = {
-                  ...STYLES.colorDisplay,
-                  backgroundColor: hex
-                };
-                const rgbDisplayStyle = {
-                  ...STYLES.colorDisplay,
-                  backgroundColor: rgb
-                };
-                const hslDisplayStyle = {
-                  ...STYLES.colorDisplay,
-                  backgroundColor: hsl
-                };
-                const textDisplayStyle = {
-                  ...STYLES.colorText,
-                  backgroundColor: hex,
-                  borderRadius: 3,
-                  color: isTextDark ? '#000' : '#fff',
-                  marginTop: 5,
-                  padding: 5
-                };
-                const textDisplayStyleW3C = {
-                  ...STYLES.colorText,
-                  backgroundColor: hex,
-                  borderRadius: 3,
-                  color: isTextDarkW3C ? '#000' : '#fff',
-                  marginTop: 5,
-                  padding: 5
-                };
+          <div>
+            {colors.map(({hex, hsl, isTextDark, isTextDarkW3C, rgb, string}, colorIndex) => {
+              const hexDisplayStyle = {
+                backgroundColor: hex
+              };
+              const rgbDisplayStyle = {
+                backgroundColor: rgb
+              };
+              const hslDisplayStyle = {
+                backgroundColor: hsl
+              };
+              const textDisplayStyle = {
+                backgroundColor: hex,
+                color: isTextDark ? '#000' : '#fff'
+              };
+              const textDisplayStyleW3C = {
+                backgroundColor: hex,
+                color: isTextDarkW3C ? '#000' : '#fff'
+              };
 
-                return (
-                  <div
-                      key={`color-${colorIndex}`}
-                      style={STYLES.color}
-                  >
-                    <div style={hexDisplayStyle}/>
+              const key = `color-${colorIndex}`;
 
-                    <div style={STYLES.colorText}>
-                      {hex}
-                    </div>
+              return (
+                <Color key={key}>
+                  <ColorDisplay style={hexDisplayStyle} />
 
-                    <div style={rgbDisplayStyle}/>
+                  <ColorText>{hex}</ColorText>
 
-                    <div style={STYLES.colorText}>
-                      {rgb}
-                    </div>
+                  <ColorDisplay style={rgbDisplayStyle} />
 
-                    <div style={hslDisplayStyle}/>
+                  <ColorText>{rgb}</ColorText>
 
-                    <div style={STYLES.colorText}>
-                      {hsl}
-                    </div>
+                  <ColorDisplay style={hslDisplayStyle} />
 
-                    <div style={textDisplayStyle}>
-                      Standard: {string}
-                    </div>
+                  <ColorText>{hsl}</ColorText>
 
-                    <div style={textDisplayStyleW3C}>
-                      W3C-Compliant: {string}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </main>
-        </div>
+                  <ColorTextDisplay style={textDisplayStyle}>Standard: {string}</ColorTextDisplay>
+
+                  <ColorTextDisplay style={textDisplayStyleW3C}>W3C-Compliant: {string}</ColorTextDisplay>
+                </Color>
+              );
+            })}
+          </div>
+        </Main>
+      </Container>
     );
   }
 }
 
-const div = document.createElement('div');
-
-div.id = 'app-container';
-
-render((
-  <App/>
-), div);
-
-document.body.appendChild(div);
-
-const style = document.createElement('style');
-
-style.textContent = `
-*, *:before, *:after {
-  box-sizing: border-box;
-}
-
-html, body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}`;
-
-document.head.appendChild(style);
+export default App;
