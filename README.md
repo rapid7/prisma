@@ -19,7 +19,7 @@ and incorporate into your project:
 import prisma from 'prisma';
 
 // CommonJS
-const prisma = require('prisma');
+const prisma = require('prisma').default;
 
 // UMD
 const prisma = window.prisma;
