@@ -9,7 +9,7 @@ A simple string-to-color conversion tool. The string provided generates a unique
 Install via npm:
 
 ```
-$ npm i prisma --save
+$ npm i @rapid7/prisma --save
 ```
 
 and incorporate into your project:
@@ -174,7 +174,7 @@ Internally the string is hashed using a simple bitwise operation, and the result
 
 Clone the git repository, and run `npm install`. From there, you can run any of the following npm scripts:
 * `build` = builds the library with `NODE_ENV=development` and with source maps, outputting to the `dist` folder
-* `build-minified` = builds the library with `NODE_ENV=production` and minified, outputting tot the `dist` folder
+* `build:minified` = builds the library with `NODE_ENV=production` and minified, outputting tot the `dist` folder
 * `dev` = runs the playground React application to see `prisma` in action. Have fun playing!
 * `lint` = runs ESLint against the files in `src`
 * `prepublish` = runs `lint`, `transpile`, `build`, and `build-minified`
