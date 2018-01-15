@@ -16,10 +16,10 @@ and incorporate into your project:
 
 ```javascript
 // ES2015
-import prisma from 'prisma';
+import prisma from '@rapid7/prisma';
 
 // CommonJS
-const prisma = require('prisma').default;
+const prisma = require('@rapid7/prisma').default;
 
 // UMD
 const prisma = window.prisma;
